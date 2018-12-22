@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>上传文件</title>
+    <link rel="shortcut icon" href="/FileServer/icon/icon.JPG"
+          type="image/x-icon">
+    <script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(":button").click(function () {
+                ajaxFileUpload();
+            });
+        })
+
+        function ajaxFileUpload() {
+            $.ajaxFileUpload({
+                url: "fileUpload",
+                secureuri: false,
+                fileElementId: 'fileId',
+                dataType: 'json',
+                success: succeCallback,
+                error: errorCallback
+            })
+        }
+
+        function succeCallback(data, status) {
+            alert(data.msg);
+        }
+
+        function errorCallback(status, e) {
+            alert(e);
+        }
+    </script>
+</head>
+<body>
+<div id="section">
+    <input type="file" id="fileId" name="file" accept=".*"/> <input
+        type="button" value="上传文件" id="submit"/>
+</div>
+<div>
+    <span>下载文件链接</span> <a
+        href="http://47.106.83.27/FileServer/fileDownload?fileName=fileName">http://47.106.83.27/FileServer/fileDownload?fileName=文件名</a>
+</div>
+</body>
+
+</html>

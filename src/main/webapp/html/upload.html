@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>表单方式上传文件</title>
+    <link rel="shortcut icon" href="../icon/icon.JPG" type="image/x-icon">
+</head>
+<body>
+<form action="upload" method="post" enctype="multipart/form-data">
+    <span>单文件上传</span><br>
+    <input type="file" name="file" accept="video/*"/><br>
+    <input type="submit" value="上传"/>
+</form>
+<br><br><br>
+<form action="batchUpload" method="post" enctype="multipart/form-data">
+    <span>批量上传文件</span><br>
+    <!-- multiple -->
+    <input type="file" name="file" accept="audio/*" multiple="6"/><br>
+    <input type="submit" value="上传"/>
+</form>
+</body>
+
+</html>

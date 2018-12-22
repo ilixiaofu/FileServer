@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>上传文件</title>
+    <link rel="shortcut icon" href="icon/icon.JPG"
+          type="image/x-icon">
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/ajaxfileupload.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $(":button").click(function () {
+                $("#play").remove();
+                $("#data").remove();
+                ajaxFileUpload();
+            });
+        })
+
+        function ajaxFileUpload() {
+            $.ajaxFileUpload({
+                url: "batchUpload",
+                secureuri: false,
+                fileElementId: 'fileid',
+                dataType: 'json',
+                success: succeCallback,
+                error: errorCallback
+            })
+        }
+
+        function succeCallback(data, status) {
+            if (data.code == 200) {
+                var datas = data.data.datas;
+                var table = $('<table id="data"></table>');
+                var th = $("<tr></tr>");
+                var name = $("<td></td>").text("文件名");
+                var type = $("<td></td>").text("文件类型");
+                var player = $("<td></td>").text("播放");
+                th.append(name, type, player);
+                table.append(th);
+                for (i in datas) {
+                    var item = datas[i];
+                    var tr = $("<tr></tr>");
+                    var _name = $("<td></td>").text(item.fileName);
+                    var _type = $("<td></td>").text(item.fileType);
+                    var _player = $("<td></td>");
+                    tr.append(_name, _type, _player);
+                    if (item.fileType == "mp3" || item.fileType == "mp4") {
+                        var a = $("<a href='javascript:void(0)' data-fileurl='" + item.fileUrl + "' data-filetype='" + item.fileType + "' onclick='play(this)'></a>").text("播放");
+                        _player.append(a);
+                    }
+                    table.append(tr);
+                }
+                $("#section").after(table);
+            }
+        }
+
+        function errorCallback(status, e) {
+            alert(e);
+        }
+
+        function play(self) {
+            $("#play").remove();
+            var fileurl = self.dataset.fileurl;
+            var filetype = self.dataset.filetype;
+            if (filetype == "mp3") {
+                var audio = $('<audio id="play" controls="controls" autoplay="autoplay"></audio>').text("您的浏览器不支持 audio 标签。");
+                var source3 = $("<source src='" + fileurl + "' type=audio/mpeg>");
+                audio.append(source3);
+                $("#data").after(audio);
+            }
+            if (filetype == "mp4") {
+                var video = $("<video id='play' width='520' height='440' controls='ontrols' autoplay='autoplay'></video>");
+                var source4 = $("<source type='video/mp4' src='" + fileurl + "'  />");
+                video.append(source4);
+                $("#data").after(video);
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="section">
+    <input type="file" id="fileid" name="file" accept=".*" multiple="multiple"/><br>
+    <input type="button" value="上传文件" id="submit"/>
+</div>
+</body>
+
+</html>
